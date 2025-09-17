@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music Hall</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #0b0b23;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    header .logo {
+      font-weight: 700;
+      font-size: 24px;
+      color: white;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+
+    header .buttons a {
+      display: inline-block;
+      background: transparent;
+      border: 1.5px solid #eee;
+      color: #eee;
+      padding: 6px 14px;
+      border-radius: 18px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 10px;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    header .buttons a:hover {
+      background-color: #6a3dff;
+      border-color: #6a3dff;
+      color: white;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .search-bar {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border-radius: 22px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background-color: #1a1a40;
+      color: white;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14c-2.48 0-4.5-2.02-4.5-4.5S7.02 5 9.5 5 14 7.02 14 9.5 11.98 14 9.5 14z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: 12px center;
+      caret-color: #6a3dff;
+    }
+
+    .main-image {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 28px;
+      object-fit: cover;
+      aspect-ratio: 4 / 3;
+      box-shadow: 0 0 15px #6a3dffcc;
+    }
+
+    .genres-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .genre, .premium-genre {
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.3s;
+    }
+
+    .genre:hover, .premium-genre:hover {
+      transform: scale(1.05);
+    }
+
+    .genre img, .premium-genre img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
+      box-shadow: 0 0 8px transparent;
+    }
+
+    .genre:hover img, .premium-genre:hover img {
+      border-color: #6a3dff;
+      box-shadow: 0 0 12px #6a3dff;
+    }
+
+    .btn-listen {
+      display: block;
+      margin: 0 auto 19px auto;
+      background-color: #6a3dff;
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: fit-content;
+      min-width: 120px;
+      text-decoration: none;
+    }
+
+    .btn-listen:hover {
+      background-color: #4a28cc;
+    }
+
+    .premium-section {
+      margin-top: 40px;
+    }
+
+    .premium-section h2 {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: #ccc;
+      width: 100%;
+    }
+
+    .premium-content {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .premium-image {
+      flex-shrink: 0;
+      width: 600px;
+      border-radius: 10px;
+      object-fit: cover;
+      aspect-ratio: 16 / 9;
+      box-shadow: 0 0 15px #6a3dffcc;
+    }
+
+    .premium-genres {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 16px;
+      flex-grow: 1;
+      max-width: 400px;
+    }
+
+    @media (max-width: 768px) {
+      .premium-content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .premium-image {
+        width: 100%;
+      }
+
+      .premium-genres {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Player fixo no rodapé */
+    #player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #1a1a40;
+      padding: 10px;
+      box-shadow: 0 -2px 10px #000;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">MUSIC HALL</div>
+      <div class="buttons">
+        <a href="cadastro.html" class="btn-listen">Cadastrar-se</a>
+        <a href="login.html" class="btn-listen">Entrar</a>
+      </div>
+    </header>
+
+    <h1>DESCUBRA SUA MÚSICA</h1>
+    <div class="search-bar">
+      <input type="search" placeholder="Pesquisar" />
+    </div>
+
+    <img class="main-image" src="Imagens/dj.img.jpg" alt="DJ animado" />
+
+    <div class="genres-section">
+      <div class="genre"><img src= "Imagens/country.img.jpg" alt="Country" /><div>COUNTRY</div></div>
+      <div class="genre"><img src="Imagens/sertanejo.img.jpg" alt="Sertanejo" /><div>SERTANEJO</div></div>
+      <div class="genre"><img src="Imagens/blues.img.jpg" alt="Blues" /><div>BLUES</div></div>
+      <div class="genre"><img src="Imagens/funk.img.jpg" alt="Funk" /><div>FUNK</div></div>
+      <div class="genre"><img src="Imagens/eletronica.img.jpg" alt="Eletronica" /><div>ELETRONICA</div></div>
+      <div class="genre"><img src="Imagens/reggae.img.jpg" alt="Reggae" /><div>REGGAE</div></div>
+    </div>
+
+    <button class="btn-listen">OUÇA AGORA</button>
+
+    <section class="premium-section">
+      <h2>ACESSE AS NOSSAS MÚSICAS PREMIUM</h2>
+      <div class="premium-content">
+        <img class="premium-image" src="Imagens/thumb.img.jpg" alt="DJ na festa" />
+
+        <div class="premium-genres">
+          <div class="premium-genre"><img src="Imagens/rock.img.jpg" alt="Rock" /><div>ROCK</div></div>
+          <div class="premium-genre"><img src="Imagens/jazz.img.jpg" alt="Jazz" /><div>JAZZ</div></div>
+          <div class="premium-genre"><img src="Imagens/forro.img.jpg" alt="forro" /><div>FORRO</div></div>
+          <div class="premium-genre"><img src="Imagens/hiphop.img.jpg" alt="hiphop" /><div>HIPHOP</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<!-- Player fixo -->
+<audio id="player" controls></audio>
+
+<script>
+  const player = document.getElementById("player");
+  const genres = document.querySelectorAll(".genre, .premium-genre");
+
+  genres.forEach(genre => {
+    genre.addEventListener("click", () => {
+      let name = genre.innerText.trim().toLowerCase(); 
+      player.src = `Musica/${name}.mp3`;
+      player.play();
+    });
+  });
+</script>
+
+  
+
+
+</body>
+</html>
